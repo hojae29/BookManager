@@ -18,10 +18,14 @@ public class User {
     @Id // PK
     @GeneratedValue // 자동증가
     private Long id;
+
     @NonNull
     private String name;
+
     @NonNull
     private String email;
+
     private LocalDateTime createdAt;
+
     private LocalDateTime updatedAt;
 }

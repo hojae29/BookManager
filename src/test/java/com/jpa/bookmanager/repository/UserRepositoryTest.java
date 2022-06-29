@@ -1,9 +1,13 @@
 package com.jpa.bookmanager.repository;
 
 import com.jpa.bookmanager.domain.User;
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,8 +19,8 @@ class UserRepositoryTest {
 
     @Test
     void crud(){
-        userRepository.save(new User());
+        userRepository.saveAndFlush(new User("new hojae", "newhojae@naver.com"));
 
-        System.out.println(">>> " + userRepository.findAll());
+        userRepository.findAll().forEach(System.out::println);
     }
 }
