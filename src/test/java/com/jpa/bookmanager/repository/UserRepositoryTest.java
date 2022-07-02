@@ -4,11 +4,6 @@ import com.jpa.bookmanager.domain.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-
-import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
-import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.endsWith;
 
 @SpringBootTest
 class UserRepositoryTest {
@@ -18,15 +13,30 @@ class UserRepositoryTest {
 
     @Test
     void crud(){
-        User user = new User();
-        user.setEmail("nav");
+        userRepository.save(new User("david", "david@naver.com"));
 
-        ExampleMatcher matcher= ExampleMatcher.matching()
-                .withMatcher("email", endsWith());
+        User user = userRepository.findById(1L).orElseThrow(RuntimeException::new);
+        user.setEmail("hojae-updated@naver.com");
 
-        Example<User> example = Example.of(user, matcher);
+        userRepository.save(user);
 
-        userRepository.findAll(example).forEach(System.out::println);
+        userRepository.findAll().forEach(System.out::println);
+    }
 
+    @Test
+    void select(){
+        System.out.println(userRepository.findByName("dennis"));
+
+        System.out.println("findByEmail : " + userRepository.findByEmail("hojae@naver.com"));
+        System.out.println("getByEmail : " + userRepository.getByEmail("hojae@naver.com"));
+        System.out.println("readByEmail : " + userRepository.readByEmail("hojae@naver.com"));
+        System.out.println("queryByEmail : " + userRepository.queryByEmail("hojae@naver.com"));
+        System.out.println("searchByEmail : " + userRepository.searchByEmail("hojae@naver.com"));
+        System.out.println("streamByEmail : " + userRepository.streamByEmail("hojae@naver.com"));
+        System.out.println("findUserByEmail : " + userRepository.findUserByEmail("hojae@naver.com"));
+        System.out.println("findSomethingByEmail : " + userRepository.findSomethingByEmail("hojae@naver.com"));
+
+        System.out.println("findTop2ByName : " + userRepository.findTop2ByName("hojae"));
+        System.out.println("findFirst1ByName : " + userRepository.findFirst1ByName("hojae"));
     }
 }
