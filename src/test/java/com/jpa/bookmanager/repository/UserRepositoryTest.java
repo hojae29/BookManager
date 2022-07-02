@@ -1,12 +1,14 @@
 package com.jpa.bookmanager.repository;
 
 import com.jpa.bookmanager.domain.User;
-import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.endsWith;
 
 @SpringBootTest
 class UserRepositoryTest {
@@ -16,15 +18,15 @@ class UserRepositoryTest {
 
     @Test
     void crud(){
-        Page<User> users = userRepository.findAll(PageRequest.of(0, 3));
+        User user = new User();
+        user.setEmail("nav");
 
-        System.out.println("page : " + users);
-        System.out.println("totalElements : " + users.getTotalElements());
-        System.out.println("totalPages : " + users.getTotalPages());
-        System.out.println("numberOfElements : " + users.getNumberOfElements());
-        System.out.println("sort : " + users.getSort());
-        System.out.println("size : " + users.getSize());
+        ExampleMatcher matcher= ExampleMatcher.matching()
+                .withMatcher("email", endsWith());
 
-        users.getContent().forEach(System.out::println);
+        Example<User> example = Example.of(user, matcher);
+
+        userRepository.findAll(example).forEach(System.out::println);
+
     }
 }
